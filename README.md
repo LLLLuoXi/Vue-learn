@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-02-02 22:53:00
+ * @LastEditTime: 2022-02-13 23:41:36
  * @LastEditors: your name
  * @Description: 
 -->
@@ -16,3 +16,4 @@ some of Vue components and notes
 - 📖 [跨域相关](./notes/跨域相关.md)  
 - 📖 [通信方式总结](./notes/通信方式总结.md)  
 - 📖 [v-model](./notes/v-model.md)  
+- 📖 [eventBus](./notes/eventBus.md)  

@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-02-12 23:53:45
+ * @LastEditTime: 2022-02-13 00:00:11
  * @LastEditors: your name
  * @Description: Modal Component
 -->
@@ -19,18 +19,16 @@ export default defineComponent({
   props: {
     isOpen: Boolean,
   },
-  emits:{
-      'close-modal':null
+  emits: {
+    "close-modal": null,
   },
-  setup(props,context){
-      const buttonClick =()=>{
-          context.emit('close-modal');
-      }
+  setup(props, context) {
+    const buttonClick = () => {
+      context.emit("close-modal");
+    };
 
-      return { buttonClick}
-      
-
-  }
+    return { buttonClick };
+  },
 });
 </script>
 
