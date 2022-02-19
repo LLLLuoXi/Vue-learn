@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-02-08 22:28:55
+ * @LastEditTime: 2022-02-19 10:57:51
  * @LastEditors: your name
  * @Description: 路由配置 route
  */
@@ -27,5 +27,10 @@ export default [
         path: '/listeners2',
         name: 'listeners',
         component: () => import('../views/listeners/two/App.vue')
+    },
+    {
+        path: '/shareData',
+        name: 'shareData',
+        component: () => import('../views/share-data/index.vue')
     }
 ]
