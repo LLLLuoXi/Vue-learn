@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-02-19 16:48:41
+ * @LastEditTime: 2022-02-19 23:53:06
  * @LastEditors: your name
  * @Description: 
  */
@@ -13,5 +13,42 @@ const router = new VueRouter({
   routes,
   mode: "history",
 });
+
+router.beforeEach((to, from, next) => {
+  // 每当导航切换时（包含刷新页面的第一次），改函数会运行
+  // from：之前的路由对象(this.$route)
+  // to：即将进入的路由对象(this.$route)
+  // next : 确认导航的一个函数 调用该函数（无参），就会直接进入to，调用该函数（传参），根据函数进入新的导航
+  console.log(to, from)
+  if (to.meta.auth) {
+    // 需要鉴权，进入鉴权逻辑
+    const status = store.getters["loginUser/status"]
+    if (status === "loading") {
+      //  加载中，无法确定是否已经登录
+      // next("/loading")
+      next({
+        path: "/loading",
+        query: {
+          returnurl: to.fullPath
+        }
+      })
+    } else if (status === "login") {
+      //登录过了
+      next()
+    } else {
+      // 未登录
+      alert("该页面需要登录，清先登录")
+      // next("/login")
+      next({
+        path: "/login",
+        query: {
+          returnurl: to.fullPath
+        }
+      })
+    }
+  } else {
+    next()
+  }
+})
 
 export default router;

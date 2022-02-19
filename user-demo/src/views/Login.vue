@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-02-19 18:13:28
+ * @LastEditTime: 2022-02-19 23:00:13
  * @LastEditors: your name
  * @Description: 
 -->
@@ -16,24 +16,14 @@
     </div>
     <div class="form-item">
       <label></label>
-      <button :disabled="$store.state.loginUser.loading">
-        {{ $store.state.loginUser.loading ? "loading..." : "登录" }}
+      <button :disabled="loading">
+        {{ loading ? "loading..." : "登录" }}
       </button>
     </div>
   </form>
 </template>
 <script>
-/**
- * {
- *  loading(){
- *    return this.$store.state.loginUser.loading
- *  },
- *  user(){
- *    return this.$store.state.loginUser.user
- *  }
- * }
- *
- *  */
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -42,6 +32,12 @@ export default {
       loginPwd: "",
     };
   },
+  computed: {
+    // ...mapState({
+    //   loading: (state) => state.loginUser.loading,
+    // }),
+    ...mapState("loginUser", ["loading"]),
+  },
   methods: {
     async handleSubmit() {
       const resp = await this.$store.dispatch("loginUser/login", {
@@ -49,7 +45,8 @@ export default {
         loginPwd: this.loginPwd,
       });
       if (resp) {
-        this.$router.push("/");
+        const path = this.$route.query.returnurl || "/";
+        this.$router.push(path);
       } else {
         alert("账号密码错误");
       }

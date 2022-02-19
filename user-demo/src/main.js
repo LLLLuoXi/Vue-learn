@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-02-19 17:02:19
+ * @LastEditTime: 2022-02-19 21:33:42
  * @LastEditors: your name
  * @Description: 
  */
@@ -9,7 +9,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-// store.dispatch("loginUser/whoAmI");
+store.dispatch("loginUser/whoAmI");
 new Vue({
   router,
   store,
