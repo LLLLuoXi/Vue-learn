@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-02-20 00:06:16
+ * @LastEditTime: 2022-02-27 23:08:41
  * @LastEditors: your name
  * @Description: 
 -->
@@ -33,7 +33,7 @@ actions: {
 },
 ```
 ## 🧐 鉴权原理
-![鉴权原理.png](https://s2.loli.net/2022/02/19/xG7oUVsIeu2dZCf.png)
+![鉴权原理.png](https://s3.bmp.ovh/imgs/2022/02/ea7b7659c1719cf2.png)
 ```js
 import store from "../store";
 router.beforeEach((to, from, next) => {
