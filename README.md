@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-02-20 01:17:51
+ * @LastEditTime: 2022-03-05 16:22:39
  * @LastEditors: your name
  * @Description: 
 -->
@@ -18,3 +18,4 @@ some of Vue components and notes
 - 📖 [v-model](./notes/v-model.md)  
 - 📖 [eventBus](./notes/eventBus.md)  
 - 📖 [登录鉴权](./user-demo/README.md)  
+- 📖 [虚拟DOM](./notes/虚拟DOM.md)  

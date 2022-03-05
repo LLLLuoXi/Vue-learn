@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-01-30 23:21:17
+ * @LastEditTime: 2022-03-05 16:21:11
  * @LastEditors: your name
  * @Description: 虚拟dom笔记
 -->
@@ -18,6 +18,9 @@
 ## 🤔 什么是虚拟dom？
 
 虚拟dom本质上就是一个普通的JS对象，用于描述视图的界面结构
+```js
+VNode {tag: 'div', data: {…}, children: Array(1), text: undefined, elm: div.hello, …}
+```
 
 在vue中，每个组件都有一个``render``函数，每个``render``函数都会返回一个虚拟dom树，这也就意味着每个组件都对应一棵虚拟DOM树
 
@@ -26,9 +29,25 @@
 
 ##  🤔 为什么需要虚拟dom？
 
-在`vue`中，渲染视图会调用``render``函数，这种渲染不仅发生在组件创建时，同时发生在视图依赖的数据更新时。如果在渲染时，直接使用真实``DOM``，由于真实``DOM``的创建、更新、插入等操作会带来大量的性能损耗，从而就会极大的降低渲染效率。
+在`vue`中，渲染视图会调用``render``函数，这种渲染不仅发生在组件创建时，同时发生在视图依赖的数据更新时。如果在渲染时，直接使用真实``DOM``，由于真实``DOM``的创建、更新、插入等操作会带来大量的性能损耗，还可能带来页面重排重绘。从而就会极大的降低渲染效率。
 
+
+  💡 真实dom和虚拟dom性能对比：
+```js
+var times = 10000000;
+console.time(`js object`);
+for (var i = 0; i < times; i++) {
+  var obj = {};
+}
+console.timeEnd("js object"); // 100.69189453125 ms
+console.time(`dom object`);
+for (var i = 0; i < times; i++) {
+  var obj = document.createElement("div");
+}
+console.timeEnd("dom object"); // 3504.902099609375 ms
+```
 因此，``vue``在渲染时，使用虚拟dom来替代真实dom，主要为解决渲染效率的问题。
+但是在组件第一次渲染的时候，或者组件只需要渲染一次，数据变化不需要重新的渲染，``vue``的效率是更加低的，因为它比直接操作真实dom还多了一步，就是生成虚拟dom。后续就不一样了，当一些复杂的节点,比如说一个父节点里面有多个子节点,当只是一个子节点的内容发生了改变,此时``虚拟DOM+Diff``算法可以精准找到DOM树变更的地方,减少DOM的操作(重排重绘)。
 
 ## 🤔 虚拟dom是如何转换为真实dom的？
 
@@ -43,6 +62,8 @@
 
 ##  🤔 模板和虚拟dom的关系
 
+模板本质来说就是一个字符串，模板的存在，仅仅是为了让开发人员更加方便的书写界面代码。
+
 vue框架中有一个``compile``模块，它主要负责将模板转换为`render`函数，而``render``函数调用后将得到虚拟dom。
 
 编译的过程分两步：
@@ -51,12 +72,55 @@ vue框架中有一个``compile``模块，它主要负责将模板转换为`rende
 
 2. 将``AST``转换为``render``函数
 
-如果使用传统的引入方式，则编译时间发生在组件第一次加载时，这称之为**运行时编译**。
+如果使用传统的引入方式(CND)，则编译时间发生在组件第一次加载时，这称之为**运行时编译(runtime only)**。
 
-如果是在`vue-cli`的默认配置下，编译发生在打包时，这称之为**模板预编译**。
+如果是在`vue-cli`的默认配置下，编译发生在打包时，这称之为**模板预编译（pre-compile）**。
+可以在`vue-cli`配置文件中修改：
+```js
+module.exports = {
+  runtimeCompiler: false,
+};
+```
+运行``npn run build``打包的时候给你编译好，打包结果了没有template模板字符串，已经全部被转换为```render```函数。
+在vue中，同时有``render( )``和``<template></template>``的时候,先认``render( )``不认``<template></template>``，而``vue cli``中会有个打包过程，把``<template></template>``生成``render( )``覆盖掉配置中的``render( )``，打包结果里只有``render( )``。
+```js
+<template>
+  <div class="hello" :a="msg" @click="msg = 'abc'">
+    {{ msg }}
+  </div>
+</template>
 
-编译是一个极其耗费性能的操作，预编译可以有效的提高运行时的性能，而且，由于运行的时候已不需要编译，`vue-cli`在打包时会排除掉`vue`中的`compile`模块，以减少打包体积
+<script>
+export default {
+  // ...
+  props: {
+    msg: String,
+  },
+  render(h) {
+    return h(
+      "div",
+      {
+        class: "hello",
+        attrs: {
+          a: this.msg,
+        },
+        on: {
+          click: () => {
+            this.msg = "abc";
+          },
+        },
+      },
+      this.msg
+    );
+  },
+// ...
 
-模板的存在，仅仅是为了让开发人员更加方便的书写界面代码
+};
+</script>
+```
 
-**vue最终运行的时候，最终需要的是render函数，而不是模板，因此，模板中的各种语法，在虚拟dom中都是不存在的，它们都会变成虚拟dom的配置**
+编译是一个极其耗费性能的操作，预编译可以有效的提高运行时的性能，而且，由于运行的时候已不需要编译，`vue-cli`在打包时会排除掉`vue`中的`compile`模块，以减少打包体积。
+
+
+
+**vue最终运行的时候，最终需要的是render函数，而不是模板，因此，模板中的各种语法，在虚拟dom中都是不存在的，它们都会变成虚拟dom的配置。**
