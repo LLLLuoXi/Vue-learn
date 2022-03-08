@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-03-07 22:08:10
+ * @LastEditTime: 2022-03-08 21:56:00
  * @LastEditors: your name
  * @Description: 
 -->
@@ -22,15 +22,20 @@
         <input id="toggle-all" class="toggle-all" type="checkbox" />
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
-          <li class="todo">
+          <li
+            class="todo"
+            :class="{ completed: todo.completed }"
+            v-for="todo in filteredTodoRef"
+            :key="todo.id"
+          >
             <div class="view">
-              <input class="toggle" type="checkbox" />
-              <label>学习composition api</label>
+              <input class="toggle" type="checkbox" v-model="todo.completed" />
+              <label>{{ todo.title }}</label>
               <button class="destroy"></button>
             </div>
             <input class="edit" type="text" />
           </li>
-          <li class="todo">
+          <!-- <li class="todo">
             <div class="view">
               <input class="toggle" type="checkbox" />
               <label>投递50封简历</label>
@@ -45,20 +50,43 @@
               <button class="destroy"></button>
             </div>
             <input class="edit" type="text" />
-          </li>
+          </li> -->
         </ul>
       </section>
       <footer class="footer">
         <span class="todo-count">
-          <strong>3</strong>
-          <span>items left</span>
+          <strong>{{ remainningRef }}</strong>
+          <span
+            >item{{
+              remainningRef === 1 || remainningRef === 0 ? "" : "s"
+            }}
+            left</span
+          >
         </span>
         <ul class="filters">
-          <li><a href="#/all" class="selected">All</a></li>
-          <li><a href="#/active" class="">Active</a></li>
-          <li><a href="#/completed" class="">Completed</a></li>
+          <li>
+            <a href="#/all" :class="{ selected: visibilityRef === 'all' }"
+              >All</a
+            >
+          </li>
+          <li>
+            <a href="#/active" :class="{ selected: visibilityRef === 'active' }"
+              >Active</a
+            >
+          </li>
+          <li>
+            <a
+              href="#/completed"
+              :class="{ selected: visibilityRef === 'completed' }"
+              >Completed</a
+            >
+          </li>
         </ul>
-        <button class="clear-completed" style="display: none">
+        <button
+          class="clear-completed"
+          style="display: none"
+          v-show="completedRef > 0"
+        >
           Clear completed
         </button>
       </footer>
@@ -67,15 +95,16 @@
 </template>
 
 <script>
-// import { ref, watchEffect } from "vue";
 import useTodoList from "./hooks/useTodoList";
 import useNewTodo from "./hooks/useNewTodo";
+import useFilter from "./hooks/useFilter";
 export default {
   setup() {
     let { todosRef } = useTodoList();
     return {
       todosRef,
       ...useNewTodo(todosRef),
+      ...useFilter(todosRef),
     };
   },
 };
