@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-03-08 21:56:00
+ * @LastEditTime: 2022-03-08 23:41:36
  * @LastEditors: your name
  * @Description: 
 -->
@@ -19,38 +19,37 @@
         />
       </header>
       <section class="main">
-        <input id="toggle-all" class="toggle-all" type="checkbox" />
+        <input
+          id="toggle-all"
+          class="toggle-all"
+          type="checkbox"
+          v-model="allDoneRef"
+        />
         <label for="toggle-all">Mark all as complete</label>
         <ul class="todo-list">
           <li
             class="todo"
-            :class="{ completed: todo.completed }"
+            :class="{
+              completed: todo.completed,
+              editing: todo === editingTodoRef,
+            }"
             v-for="todo in filteredTodoRef"
             :key="todo.id"
           >
             <div class="view">
               <input class="toggle" type="checkbox" v-model="todo.completed" />
-              <label>{{ todo.title }}</label>
-              <button class="destroy"></button>
+              <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
+              <button class="destroy" @click="remove(todo)"></button>
             </div>
-            <input class="edit" type="text" />
+            <input
+              class="edit"
+              type="text"
+              v-model="todo.title"
+              @blur="doneEdit(todo)"
+              @keyup.enter="doneEdit(todo)"
+              @keyup.escape="cancelEdit(todo)"
+            />
           </li>
-          <!-- <li class="todo">
-            <div class="view">
-              <input class="toggle" type="checkbox" />
-              <label>投递50封简历</label>
-              <button class="destroy"></button>
-            </div>
-            <input class="edit" type="text" />
-          </li>
-          <li class="todo">
-            <div class="view">
-              <input class="toggle" type="checkbox" />
-              <label>上午10:30 参加面试</label>
-              <button class="destroy"></button>
-            </div>
-            <input class="edit" type="text" />
-          </li> -->
         </ul>
       </section>
       <footer class="footer">
@@ -86,6 +85,7 @@
           class="clear-completed"
           style="display: none"
           v-show="completedRef > 0"
+          @click="removeCompleted"
         >
           Clear completed
         </button>
@@ -98,6 +98,8 @@
 import useTodoList from "./hooks/useTodoList";
 import useNewTodo from "./hooks/useNewTodo";
 import useFilter from "./hooks/useFilter";
+import useEditTodo from "./hooks/useEditTodo";
+import useRemoveTodo from "./hooks/useRemoveTodo";
 export default {
   setup() {
     let { todosRef } = useTodoList();
@@ -105,6 +107,8 @@ export default {
       todosRef,
       ...useNewTodo(todosRef),
       ...useFilter(todosRef),
+      ...useEditTodo(todosRef),
+      ...useRemoveTodo(todosRef),
     };
   },
 };
