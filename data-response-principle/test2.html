@@ -1,0 +1,72 @@
+<!--
+ * @Author: luoxi
+ * @LastEditTime: 2022-03-24 23:45:26
+ * @LastEditors: your name
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>obj.a = {{obj.a}}</h1>
+      <p>
+        <!-- <button @click="$delete(obj, 'a')">delete a</button> -->
+        <button @click="obj.a=2">delete a</button>
+        <button @click="$set(obj, 'b', Math.random())">add b</button>
+      </p>
+      <ul>
+        <li v-for="n in arr">{{n}}</li>
+      </ul>
+      <button @click="arr.sort(()=>Math.random()-0.5)">resort</button>
+      <!-- 给数组的某一项赋值，数据是变了，但是vue监控不到变化，还是可以用$set() -->
+      <!-- <button @click="arr[0].name='luoxi'">change first</button> -->
+      <button @click="k++">change k</button>
+    </div>
+    <script src="./vue.min.js"></script>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data() {
+          return {
+            obj: { a: 1, c: 111 },
+            arr: [1, 2, 3, 4],
+            k: 3,
+          };
+        },
+        mounted() {
+          console.log(this);
+        },
+        /* 
+        模拟模板上没有obj.b .但是用$set改变obj.b的值，观察是够触发了render函数。结果是触发。
+        这就说明了，模板上没有依赖obj.b但是依赖了obj，触发了obj的dep。建议少用$set
+        */
+
+        render(h) {
+          console.log("render");
+          return h("div", [
+            h("h1", `obj.a = ${this.obj.a}`),
+            h(
+              "button",
+              {
+                on: {
+                  click: () => {
+                    this.$set(this.obj, "b", 123);
+                    // this.$delete(this.obj, "c");
+                    this.k++;
+                  },
+                },
+              },
+              "add b"
+            ),
+          ]);
+        },
+      });
+    </script>
+  </body>
+</html>

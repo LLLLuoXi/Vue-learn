@@ -5,13 +5,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:v-model": "vite ./src/components/v-model/test.vue"
+    "test:v-model": "vite ../src/components/v-model/test.vue"
   },
   "dependencies": {
     "vue": "^3.2.25"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.0",
+    "less": "^4.1.2",
     "vite": "^2.7.2"
   }
 }

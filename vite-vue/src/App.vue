@@ -1,18 +1,29 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-02-01 23:42:24
+ * @LastEditTime: 2022-03-24 21:40:37
  * @LastEditors: your name
  * @Description: 
 -->
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+
 
 <template>
-
+  <!-- <Number :value="this.formData.age" /> -->
+  <Toast />
 </template>
+<script>
+import Number from "./components/v-model/index.vue";
+import Toast from "./components/Toast/index.vue";
+export default {
+  components: { Number, Toast },
+  data() {
+    return {
+      formData: {
+        age: 11,
+      },
+    };
+  },
+};
+</script>
 
 <style>
 </style>
