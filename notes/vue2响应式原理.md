@@ -1,4 +1,10 @@
 # vue2响应式原理
+- [vue2响应式原理](#vue2响应式原理)
+  - [Observer](#observer)
+  - [Dep](#dep)
+  - [Watcher](#watcher)
+  - [Scheduler](#scheduler)
+  - [总体流程](#总体流程)
 
 **响应式数据的最终目标**，是数据变化了会自动去运行一些函数，比如当对象本身或者对象属性发生变化，会运行一些函数，常见的就是render函数。
 
@@ -9,7 +15,7 @@
 3. Watcher
 4. Scheduler
 
-# Observer
+## Observer
 
 Observer要实现的目标非常简单，就是把一个普通的对象转换为响应式的对象。
 
@@ -36,7 +42,7 @@ vue自定义对象.__proto__ === Arrary.prototype
 
 总之，Observer的目标，就是要让一个对象，它属性的读取、赋值，内部数组的变化都要能够被vue感知到。
 
-# Dep
+## Dep
 
 这里有两个问题没解决，就是读取属性时要做什么事，而属性变化时要做什么事，这个问题需要依靠Dep来解决。
 
@@ -53,7 +59,7 @@ Dep的含义是`Dependency`，表示依赖的意思。
 
 ![dep.png](https://s2.loli.net/2022/03/24/CQ2g5aqGRF3MkY7.png)
 
-# Watcher
+## Watcher
 
 这里又出现一个问题，就是Dep如何知道是谁在用我？
 
@@ -86,7 +92,7 @@ window.currentWatcher  = null
 
 当数据变化时，dep就会通知该watcher，而watcher将重新运行render函数，从而让界面重新渲染同时重新记录当前的依赖。
 
-# Scheduler
+## Scheduler
 
 现在还剩下最后一个问题，就是Dep通知watcher之后，如果watcher执行重运行对应的函数，就有可能导致函数频繁运行，从而导致效率低下
 
@@ -113,8 +119,9 @@ Promise.resolve().then()
 > nextTick 的具体处理方式见：https://cn.vuejs.org/v2/guide/reactivity.html#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E9%98%9F%E5%88%97
 
 也就是说，当响应式数据变化时，`render`函数的执行是异步的，并且在微队列中
+就是将watch全部添加到queue中，由第一次执行时异步挂起。同步任务执行之后，异步任务进行执行，从queue中取出循环执行。
 
-# 总体流程
+## 总体流程
 
 ![总体流程.png](https://s2.loli.net/2022/03/24/Jf834OQeVK9GCb2.png)
 

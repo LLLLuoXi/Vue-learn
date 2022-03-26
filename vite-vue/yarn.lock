@@ -54,6 +54,11 @@
     "@vue/compiler-dom" "3.2.29"
     "@vue/shared" "3.2.29"
 
+"@vue/devtools-api@^6.0.0":
+  "integrity" "sha512-79InfO2xHv+WHIrH1bHXQUiQD/wMls9qBk6WVwGCbdwP7/3zINtvqPNMtmSHXsIKjvUAHc8L0ouOj6ZQQRmcXg=="
+  "resolved" "https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.1.3.tgz"
+  "version" "6.1.3"
+
 "@vue/reactivity-transform@3.2.29":
   "integrity" "sha512-YF6HdOuhdOw6KyRm59+3rML8USb9o8mYM1q+SH0G41K3/q/G7uhPnHGKvspzceD7h9J3VR1waOQ93CUZj7J7OA=="
   "resolved" "https://registry.npmmirror.com/@vue/reactivity-transform/download/@vue/reactivity-transform-3.2.29.tgz"
@@ -360,7 +365,14 @@
   optionalDependencies:
     "fsevents" "~2.3.2"
 
-"vue@^3.2.25", "vue@3.2.29":
+"vue-router@^4.0.13":
+  "integrity" "sha512-LmXrC+BkDRLak+d5xTMgUYraT3Nj0H/vCbP+7usGvIl9Viqd1UP6AsP0i69pSbn9O0dXK/xCdp4yPw21HqV9Jw=="
+  "resolved" "https://registry.npmmirror.com/vue-router/-/vue-router-4.0.13.tgz"
+  "version" "4.0.13"
+  dependencies:
+    "@vue/devtools-api" "^6.0.0"
+
+"vue@^3.2.0", "vue@^3.2.25", "vue@3.2.29":
   "integrity" "sha512-cFIwr7LkbtCRanjNvh6r7wp2yUxfxeM2yPpDQpAfaaLIGZSrUmLbNiSze9nhBJt5MrZ68Iqt0O5scwAMEVxF+Q=="
   "resolved" "https://registry.npmmirror.com/vue/download/vue-3.2.29.tgz"
   "version" "3.2.29"

@@ -1,13 +1,13 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-02-01 23:42:09
+ * @LastEditTime: 2022-03-26 23:07:24
  * @LastEditors: your name
  * @Description: 
 -->
 <template>
   <div>
-    <!-- <Number :value="this.formData.age" /> -->
-    sdwdwdwdw
+    <Number :value="this.formData.age" />
+    <!-- sdwdwdwdw -->
   </div>
 </template>
 
