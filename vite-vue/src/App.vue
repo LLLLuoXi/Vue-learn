@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-03-26 23:15:22
+ * @LastEditTime: 2022-03-28 19:10:11
  * @LastEditors: your name
  * @Description: 
 -->
@@ -11,6 +11,7 @@
     <div class="links">
       <router-link to="/toast" class="link">toast</router-link>
       <router-link to="/vmodel" class="link">vmodel</router-link>
+      <router-link to="/tagsInput" class="link">tagsInput</router-link>
     </div>
     <div class="view">
       <router-view></router-view>
