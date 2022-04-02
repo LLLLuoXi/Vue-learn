@@ -1,19 +1,19 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-03-28 19:10:11
+ * @LastEditTime: 2022-04-03 00:37:28
  * @LastEditors: your name
  * @Description: 
 -->
 
 
 <template>
-  <div class="app-container">
-    <div class="links">
-      <router-link to="/toast" class="link">toast</router-link>
-      <router-link to="/vmodel" class="link">vmodel</router-link>
-      <router-link to="/tagsInput" class="link">tagsInput</router-link>
+  <div class="container my-0 mx-auto h-screen">
+    <div class="felx p-8 rounded-xl shadow-md">
+      <router-link to="/toast" class="btn">toast</router-link>
+      <router-link to="/vmodel" class="btn">vmodel</router-link>
+      <router-link to="/tagsInput" class="btn">tagsInput</router-link>
     </div>
-    <div class="view">
+    <div class="view p-8 rounded-xl shadow-md h-3/4">
       <router-view></router-view>
     </div>
   </div>
@@ -33,24 +33,5 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-.app-container {
-  width: 100vw;
-  height: 100vh;
-  .link {
-    display: inline-block;
-    margin: 50px 10px;
-    padding: 5px 12px;
-    border: 1px solid;
-    border-radius: 10px;
-    text-align: center;
-    transition: all 0.3s;
-    &:hover {
-      background-color: darken(#999, 10%);
-    }
-  }
-  .view {
-    margin: 50px auto;
-  }
-}
+<style scoped>
 </style>
