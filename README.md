@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-03-24 23:48:19
+ * @LastEditTime: 2022-04-26 23:05:56
  * @LastEditors: your name
  * @Description: 
 -->
@@ -20,3 +20,4 @@ some of Vue components and notes
 - 📖 [登录鉴权](./user-demo/README.md)  
 - 📖 [虚拟DOM](./notes/虚拟DOM.md)  
 - 📖 [Vue2响应式原理](./notes/vue2响应式原理.md)  
+- 📖 [Vue2实例化和重渲染流程](./notes/Vue2实例化和重渲染流程.md)  
