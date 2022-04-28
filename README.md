@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-04-26 23:05:56
+ * @LastEditTime: 2022-04-28 22:33:23
  * @LastEditors: your name
  * @Description: 
 -->
@@ -21,3 +21,4 @@ some of Vue components and notes
 - 📖 [虚拟DOM](./notes/虚拟DOM.md)  
 - 📖 [Vue2响应式原理](./notes/vue2响应式原理.md)  
 - 📖 [Vue2实例化和重渲染流程](./notes/Vue2实例化和重渲染流程.md)  
+- 📖 [mvc模式模拟vue核心库视图绑定和更新渲染](./demos/mvc/mvc.js)  
