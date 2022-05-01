@@ -1,3 +1,9 @@
+/*
+ * @Author: luoxi
+ * @LastEditTime: 2022-05-01 22:19:07
+ * @LastEditors: your name
+ * @Description: 
+ */
 import { useDom, useReactive } from '../MVVM';
 
 function App() {
@@ -5,6 +11,8 @@ function App() {
     count: 0,
     name: 'LLLLuoxi',
   });
+  console.log(state.count);
+  state.count += 1
 
   const add = (num) => {
     state.count += num;
