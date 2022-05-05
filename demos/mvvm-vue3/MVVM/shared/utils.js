@@ -1,6 +1,6 @@
 /*
  * @Author: luoxi
- * @LastEditTime: 2022-05-01 21:43:57
+ * @LastEditTime: 2022-05-05 23:25:37
  * @LastEditors: your name
  * @Description: 通用工具方法
  */
@@ -15,4 +15,8 @@ export function hasOwnProperty(target, key) {
 
 export function isEqual(newValue, oldValue) {
   return newValue === oldValue
+}
+
+export function randomNum() {
+  return new Date().getTime() + parseInt(Math.random() * 10000)
 }
