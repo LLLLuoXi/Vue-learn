@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-04-28 22:33:23
+ * @LastEditTime: 2022-06-26 02:31:01
  * @LastEditors: your name
  * @Description: 
 -->
@@ -12,6 +12,7 @@ some of Vue components and notes
 - 📖 [前端框架的由来](./notes/前端框架的由来.md)  
 - 📖 [核心概念（虚拟dom，渲染过程）](./notes/核心概念.md)  
 - 📖 [插槽](./notes/插槽.md)  
+- 📖 [作用域插槽](./scoped-slots-demo/README.md)  
 - 📖 [路由](./notes/路由.md)  
 - 📖 [跨域相关](./notes/跨域相关.md)  
 - 📖 [通信方式总结](./notes/通信方式总结.md)  
