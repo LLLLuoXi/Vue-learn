@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-06-27 22:35:55
+ * @LastEditTime: 2022-06-27 22:52:57
  * @LastEditors: your name
  * @Description: 虚拟dom笔记
 -->
@@ -55,42 +55,42 @@ console.timeEnd("dom object"); // 3504.902099609375 ms
 ```js
 // 渲染器工作原理
 function renderer(vnode, container) {
-        // 使用vnode.tag作为标签名穿件DOM元素
-        const el = document.createElement(vnode.tag);
-        // 遍历vnode.props将属性和事件添加到DOM元素
-        for (const key in vnode.props) {
-          if (/^on/.test(key)) {
-            el.addEventListener(
-              // onClick -> onclick
-              key.substr(2).toLocaleLowerCase(),
-              // 事件处理函数
-              vnode.props[key]
-            );
-          }
-        }
-        // 处理chilren
-        if (typeof vnode.chilren === "string") {
-          // 文本节点
-          el.appendChild(document.createTextNode(vnode.chilren));
-        } else if (Array.isArray(vnode.chilren)) {
-          // 递归调用randerer渲染子节点，container是当前el
-          vnode.chilren.forEach((child) => renderer(child, el));
-        }
-        // 挂载
-        container.appendChild(el);
-      }
+  // 使用vnode.tag作为标签名穿件DOM元素
+  const el = document.createElement(vnode.tag);
+  // 遍历vnode.props将属性和事件添加到DOM元素
+  for (const key in vnode.props) {
+    if (/^on/.test(key)) {
+      el.addEventListener(
+        // onClick -> onclick
+        key.substr(2).toLocaleLowerCase(),
+        // 事件处理函数
+        vnode.props[key]
+      );
+    }
+  }
+  // 处理chilren
+  if (typeof vnode.chilren === "string") {
+    // 文本节点
+    el.appendChild(document.createTextNode(vnode.chilren));
+  } else if (Array.isArray(vnode.chilren)) {
+    // 递归调用randerer渲染子节点，container是当前el
+    vnode.chilren.forEach((child) => renderer(child, el));
+  }
+  // 挂载
+  container.appendChild(el);
+}
 
-      const vnode = {
-        tag: "div",
-        props: {
-          onClick: () => {
-            alert("hello");
-          },
-        },
-        chilren: "click me",
-      };
+const vnode = {
+  tag: "div",
+  props: {
+    onClick: () => {
+      alert("hello");
+    },
+  },
+  chilren: "click me",
+};
 
-      renderer(vnode, document.body);
+renderer(vnode, document.body);
 ```
 
 如果一个组件受响应式数据变化的影响，需要重新渲染时，它仍然会重新调用render函数，创建出一个新的虚拟dom树，用新树和旧树对比，通过对比，vue会找到最小更新量，然后更新必要的虚拟dom节点，最后，这些更新过的虚拟节点，会去修改它们对应的真实dom(实际上是直接使用新树，抛弃旧树，然后只更新必要的真实dom)
