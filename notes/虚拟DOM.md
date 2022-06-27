@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-03-05 16:21:11
+ * @LastEditTime: 2022-06-27 22:35:55
  * @LastEditors: your name
  * @Description: 虚拟dom笔记
 -->
@@ -29,7 +29,7 @@ VNode {tag: 'div', data: {…}, children: Array(1), text: undefined, elm: div.h
 
 ##  🤔 为什么需要虚拟dom？
 
-在`vue`中，渲染视图会调用``render``函数，这种渲染不仅发生在组件创建时，同时发生在视图依赖的数据更新时。如果在渲染时，直接使用真实``DOM``，由于真实``DOM``的创建、更新、插入等操作会带来大量的性能损耗，还可能带来页面重排重绘。从而就会极大的降低渲染效率。
+在`vue`中，渲染视图会调用``render``函数，这种渲染不仅发生在组件创建时，同时发生在**视图依赖的数据**更新时。如果在渲染时，直接使用真实``DOM``，由于真实``DOM``的创建、更新、插入等操作会带来大量的性能损耗，还可能带来页面重排重绘。从而就会极大的降低渲染效率。
 
 
   💡 真实dom和虚拟dom性能对比：
@@ -51,7 +51,47 @@ console.timeEnd("dom object"); // 3504.902099609375 ms
 
 ## 🤔 虚拟dom是如何转换为真实dom的？
 
-在一个组件实例首次被渲染时，它先生成虚拟dom树，然后根据虚拟dom树创建真实dom，并把真实dom挂载到页面中合适的位置，此时，每个虚拟dom便会对应一个真实的dom。
+在一个组件实例首次被渲染时，它先生成虚拟dom树，然后根据虚拟dom树通过**渲染器**来创建真实dom，并把真实dom挂载到页面中合适的位置，此时，每个虚拟dom便会对应一个真实的dom。
+```js
+// 渲染器工作原理
+function renderer(vnode, container) {
+        // 使用vnode.tag作为标签名穿件DOM元素
+        const el = document.createElement(vnode.tag);
+        // 遍历vnode.props将属性和事件添加到DOM元素
+        for (const key in vnode.props) {
+          if (/^on/.test(key)) {
+            el.addEventListener(
+              // onClick -> onclick
+              key.substr(2).toLocaleLowerCase(),
+              // 事件处理函数
+              vnode.props[key]
+            );
+          }
+        }
+        // 处理chilren
+        if (typeof vnode.chilren === "string") {
+          // 文本节点
+          el.appendChild(document.createTextNode(vnode.chilren));
+        } else if (Array.isArray(vnode.chilren)) {
+          // 递归调用randerer渲染子节点，container是当前el
+          vnode.chilren.forEach((child) => renderer(child, el));
+        }
+        // 挂载
+        container.appendChild(el);
+      }
+
+      const vnode = {
+        tag: "div",
+        props: {
+          onClick: () => {
+            alert("hello");
+          },
+        },
+        chilren: "click me",
+      };
+
+      renderer(vnode, document.body);
+```
 
 如果一个组件受响应式数据变化的影响，需要重新渲染时，它仍然会重新调用render函数，创建出一个新的虚拟dom树，用新树和旧树对比，通过对比，vue会找到最小更新量，然后更新必要的虚拟dom节点，最后，这些更新过的虚拟节点，会去修改它们对应的真实dom(实际上是直接使用新树，抛弃旧树，然后只更新必要的真实dom)
 
@@ -66,11 +106,21 @@ console.timeEnd("dom object"); // 3504.902099609375 ms
 
 vue框架中有一个``compile``模块，它主要负责将模板转换为`render`函数，而``render``函数调用后将得到虚拟dom。
 
-编译的过程分两步：
+编译的过程分三步：
 
-1. 将模板字符串转换成为`AST`（抽象语法树：js树形结构来描述我们原始的代码）
+1. **解析器**将模板字符串转换成为`AST`（抽象语法树：js树形结构来描述我们原始的代码）
+2. **优化器**遍历AST标记静态节点。  
+      - 那些没有使用任何遍历，比如纯文本节点，就是一个静态节点，它只会在首次渲染中进行解析，后续不需要重新渲染。
+      - 优化器为静态节点打上标记后，之后的重新渲染，就不需要为有标记的节点创建新的vnode，而是直接复制之前已存在的vnode，而在vnode更新节点时就不会重新渲染它。
+3. **代码生成器**将``AST``转换为``render``函数
+      - 代码生成器会将模板生成一个`with`函数的代码字符串，最终导出到render函数中。
 
-2. 将``AST``转换为``render``函数
+```js
+const code = `with(this){console.log('hello')}`
+const fn = new Function(code)
+fn()
+```
+
 
 如果使用传统的引入方式(CND)，则编译时间发生在组件第一次加载时，这称之为**运行时编译(runtime only)**。
 
@@ -78,7 +128,7 @@ vue框架中有一个``compile``模块，它主要负责将模板转换为`rende
 可以在`vue-cli`配置文件中修改：
 ```js
 module.exports = {
-  runtimeCompiler: false,
+  runtimeCompiler: false, // 默认值是false
 };
 ```
 运行``npn run build``打包的时候给你编译好，打包结果了没有template模板字符串，已经全部被转换为```render```函数。
