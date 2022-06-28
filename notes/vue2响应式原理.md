@@ -53,6 +53,9 @@ Dep的含义是`Dependency`，表示依赖的意思。
 - 记录依赖：是谁在用我
 - 派发更新：我变了，我要通知那些用到我的人
 
+比如运行`render`函数中，读取了响应式数据，触发了`getter`函数，这时会把`render`函数记录在`dep`实例中，这些有`dep`实例的数据才可以后续进行响应式更新。但有个特殊情况，也就是给一个对象`obj`添加属性一个`a`属性时候`this.$(this.obj,"a",123)`，尽管`obj.a`没有dep实例，但是触发了`obj`的dep实例记录的render。所以Vue建议尽量不用`$set`和`$delete`方法，会影响效率。即使不用`obj.a`属性，也要先定义出来把它变成响应式数据。
+
+
 当读取响应式对象的某个属性时，运行``getter``函数时，它会进行依赖收集：有人用到了我
 
 当改变某个属性时，运行``setter``函数,它会派发更新：那些用我的人听好了，我变了
@@ -86,7 +89,7 @@ window.currentWatcher  = null
 
 ![watcher.png](https://s2.loli.net/2022/03/24/v1b6ofemQKy5atP.png)
 
-每一个`vue`组件实例，都至少对应一个`watcher`，该`watcher`中记录了该组件的`render`函数。
+每一个`vue`组件实例，都至少对应一个`watcher`，`vm._watcher`该`watcher`中记录了该组件的`render`函数。
 
 `watcher`首先会把`render`函数运行一次以收集依赖，于是那些在render中用到的响应式数据就会记录这个watcher。
 
@@ -111,7 +114,7 @@ state.d = "new data";
 
 调度器维护一个执行队列，该队列同一个watcher仅会存在一次，队列中的watcher不是立即执行，它会通过一个叫做`nextTick`的工具方法，把这些需要执行的watcher放入到事件循环的微队列中，nextTick的具体做法是通过`Promise`完成的
 ```js
-Promise.resolve().then()
+Promise.resolve().then(fn)
 ```
 
 > nextTick 通过 `this.$nextTick` 暴露给开发者
@@ -125,5 +128,5 @@ Promise.resolve().then()
 
 ![总体流程.png](https://s2.loli.net/2022/03/24/Jf834OQeVK9GCb2.png)
 
-首先，原始对象交给``Observer``变成一个具有``getter``和``setter``的响应式的对象。当render函数执行，不是立即执行，而是交给``watcher``执行，``watcher``通过设置一个全局变量然后再去运行render函数，执行过程中用到了响应式对象里的一些属性，触发getter吧这些属性收集进来，记录里这些属性用到了``watcher``。有一天当数据发生了改变，``setter``函数会执行，通知``watcher``变化，``watcher``也不是立即执行render，不然就会重复执行很多次，而是把自己交给scheduler调度器，调度器吧``watcher``添加到队列中等待执行，会把队列的执行过程(``exexc watchers``)交给nextTick,等待同步代码执行结束后执行。重新运行watcher，重新手机依赖运行render函数，循环往复。
+首先，原始对象交给``Observer``变成一个具有``getter``和``setter``的响应式对象。当render函数执行，不是立即执行，而是交给``watcher``执行，``watcher``通过设置一个全局变量然后再去运行render函数，执行过程中用到了响应式对象里的一些属性，触发getter吧这些属性收集进来，记录了这些属性用到了``watcher``。有一天当数据发生了改变，``setter``函数会执行，通知``watcher``变化，``watcher``也不是立即执行render，不然就会重复执行很多次，而是把自己交给scheduler调度器，调度器吧``watcher``添加到队列中等待执行，会把队列的执行过程(``exexc watchers``)交给nextTick,等待同步代码执行结束后执行。重新运行watcher，重新收集依赖运行render函数，循环往复。
 
