@@ -84,6 +84,25 @@ get（）{dep.depend()}，
 //在这个函数里会检查这个全局变量，记录谁（某一个watcher）在用我。
 window.currentWatcher  = null
 ```
+`depend()`函数
+```js
+class Dep {
+  constructor() {
+      this.subs = []
+  }
+  // ................
+  addSub(sub) {
+      this.subs.push(sub)
+  }
+  depend() {
+      if (window.currentWatcher) {
+        // 把当前正在读取数据的Watcher收集到Dep中
+          this.addSub(window.currentWatcher)
+      }
+  }
+}
+
+```
 
 当Dep进行派发更新时，它会通知之前记录的所有watcher：我变了
 
@@ -91,7 +110,7 @@ window.currentWatcher  = null
 
 每一个`vue`组件实例，都至少对应一个`watcher`，`vm._watcher`该`watcher`中记录了该组件的`render`函数。
 
-`watcher`首先会把`render`函数运行一次以收集依赖，于是那些在render中用到的响应式数据就会记录这个watcher。
+`watcher`首先会把`render`函数运行一次以收集依赖，于是那些在render中用到的响应式数据就会记录这个watcher。监听`render`函数的执行过程，执行过程中用到了哪些响应式数据，就把这个watcher作为依赖收集进来。
 
 当数据变化时，dep就会通知该watcher，而watcher将重新运行render函数，从而让界面重新渲染同时重新记录当前的依赖。
 
