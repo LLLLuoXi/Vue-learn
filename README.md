@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-06-30 17:55:13
+ * @LastEditTime: 2022-07-01 21:28:18
  * @LastEditors: your name
  * @Description: 
 -->
@@ -24,3 +24,4 @@ some of Vue components and notes
 - 📖 [mvc模式模拟vue核心库视图绑定和更新渲染](./demos/mvc/mvc.js)  
 - 📖 [diff](./notes/Diff.md)  
 - 📖 [computed](./notes/computed.md)  
+- 📖 [优化相关](./notes/优化相关.md)  
