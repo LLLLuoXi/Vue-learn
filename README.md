@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-07-01 21:28:18
+ * @LastEditTime: 2022-07-06 23:04:45
  * @LastEditors: your name
  * @Description: 
 -->
@@ -25,3 +25,4 @@ some of Vue components and notes
 - 📖 [diff](./notes/Diff.md)  
 - 📖 [computed](./notes/computed.md)  
 - 📖 [优化相关](./notes/优化相关.md)  
+- 📖 [KeepAlive](./notes/KeepAlive.md)  
