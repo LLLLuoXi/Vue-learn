@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-07-06 23:04:45
+ * @LastEditTime: 2022-07-15 18:11:44
  * @LastEditors: your name
  * @Description: 
 -->
@@ -18,11 +18,15 @@ some of Vue components and notes
 - 📖 [通信方式总结](./notes/通信方式总结.md)  
 - 📖 [v-model](./notes/v-model.md)  
 - 📖 [eventBus](./notes/eventBus.md)  
-- 📖 [登录鉴权](./user-demo/README.md)  
 - 📖 [Vue2响应式原理](./notes/vue2响应式原理.md)  
 - 📖 [Vue2实例化和重渲染流程](./notes/Vue2实例化和重渲染流程.md)  
-- 📖 [mvc模式模拟vue核心库视图绑定和更新渲染](./demos/mvc/mvc.js)  
 - 📖 [diff](./notes/Diff.md)  
 - 📖 [computed](./notes/computed.md)  
 - 📖 [优化相关](./notes/优化相关.md)  
 - 📖 [KeepAlive](./notes/KeepAlive.md)  
+
+#  🗻 demos
+
+- 🍉 [recycleScroller](./demos/recycle-scroller-demo/README.md)  
+- 🥥 [登录鉴权](./user-demo/README.md)  
+- 🍋 [mvc模式模拟vue核心库视图绑定和更新渲染](./demos/mvc/mvc.js)  
