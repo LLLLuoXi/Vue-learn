@@ -1,6 +1,6 @@
 <!--
  * @Author: luoxi
- * @LastEditTime: 2022-07-15 18:11:44
+ * @LastEditTime: 2022-07-16 20:59:55
  * @LastEditors: your name
  * @Description: 
 -->
@@ -30,3 +30,4 @@ some of Vue components and notes
 - 🍉 [recycleScroller](./demos/recycle-scroller-demo/README.md)  
 - 🥥 [登录鉴权](./user-demo/README.md)  
 - 🍋 [mvc模式模拟vue核心库视图绑定和更新渲染](./demos/mvc/mvc.js)  
+- 🍊 [vue2响应式](./demos/vue2-reactive/reactivity.js)  
